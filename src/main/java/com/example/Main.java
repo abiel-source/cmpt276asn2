@@ -26,6 +26,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -48,11 +51,55 @@ public class Main {
     SpringApplication.run(Main.class, args);
   }
 
+  // main page
+  // =========
   @RequestMapping("/")
   String index(Map<String, Object> model) {
     String name = "abiel";
     model.put("username", name);
     return "index";
+  }
+
+  // rectangle GET
+  // =============
+  @GetMapping(
+    path = "/rectangle"
+  )
+  public String getRectForm(Map<String, Object> model)
+  {
+    Rectangle rect = new Rectangle();
+    model.put("rect", rect);
+    return "rectangle.html";
+  }
+
+  // rectangle POST
+  // ==============
+  @PostMapping(
+    path = "/rectangle",
+    consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
+  )
+  public String handleRectFormSubmit(Map<String, Object> model, Rectangle rect) throws Exception
+  {
+    // save rectangle into db
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer)";
+      String sqlInsert = "INSERT INTO rectangles (name, color, width, height) VALUES ('" + rect.getName() + "', '" + rect.getColor() + "', " + rect.getWidth() + ", " + rect.getHeight() + ")";
+      stmt.executeUpdate(sqlTable);
+      stmt.executeUpdate(sqlInsert);
+      return "redirect:/rectangle/success";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }
+  }
+
+  // rectangle SUCCESS
+  // =================
+  @GetMapping("/rectangle/success")
+  public String handleRectSuccess()
+  {
+    return "success";
   }
 
   @RequestMapping("/db")
