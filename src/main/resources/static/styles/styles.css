@@ -1,0 +1,84 @@
+/* disable spinners in number input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* body */
+/********/
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: red;
+    color: blue;
+    padding: 20px;
+}
+
+/* header */
+/**********/
+.header {
+    border: 3px solid blue;
+    padding: 20px;
+}
+
+.header-right {
+    margin-top: 10px;
+}
+
+.logo {
+    text-decoration: none;
+}
+
+/* links */
+/*********/
+a {
+    color: blue;
+    border: 1px solid black;
+}
+
+.main-menu {
+    margin-top: 50px;
+}
+
+/* forms, inputs */
+/*****************/
+input {
+    font-family: 'Press Start 2P', cursive;
+    background-color: blueviolet;
+    color: blue;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    background-color: purple;
+}
+
+input[type=submit]:hover {
+    background-color: blueviolet;
+}
+
+input[type=submit]:focus {
+    background-color: purple;
+}
+
+form, input {
+    width: 350px;
+    border: 3px solid black;
+    border-collapse: collapse;
+}
+
+/* table */
+/*********/
+table, th, td {
+    border: 3px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    background-color: blueviolet;
+}

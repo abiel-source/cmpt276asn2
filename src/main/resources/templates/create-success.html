@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>create-success</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/styles.css}"> 
+    <!-- For CSS and JavaScript files, the default directory is src/main/resources/static  -->
+    <!-- https://www.baeldung.com/spring-thymeleaf-css-js -->
+    <title>create success</title>
 </head>
 <body>
-    <p>create query successfully executed.</p>
+    <p>CREATE query successfully executed.</p>
     
-    <a th:href="@{/}">main page</a>
+    <div class="main-menu">
+        <a th:href="@{/}">main menu</a>
+    </div>
 </body>
 </html>

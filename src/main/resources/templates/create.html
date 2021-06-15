@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>create</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/styles.css}"> 
+    <!-- For CSS and JavaScript files, the default directory is src/main/resources/static  -->
+    <!-- https://www.baeldung.com/spring-thymeleaf-css-js -->
+    <title>create rectangle</title>
 </head>
 <body>
-    <form action="#" method="post" th:action="@{/create}" th:object="${rect}">
-        <input type="text" th:field="*{name}" placeholder="name"> <br>
-        <input type="text" th:field="*{color}" placeholder="color"> <br>
-        <input type="number" th:field="*{width}" placeholder="width"> <br>
-        <input type="number" th:field="*{height}" placeholder="height"> <br>
-        <input type="submit" value="Create Rectangle">
+    <p>enter the <u>name</u>, <u>color</u>, <u>width</u>, and <u>height</u> attributes of your rectangle!</p>
+
+    <form action="#" method="post" th:action="@{/create}" th:object="${rect}" autocomplete="off">
+        <input type="text" th:field="*{name}" placeholder="name" required> <br>
+        <input type="text" th:field="*{color}" placeholder="color" required> <br>
+        <input type="number" th:field="*{width}" placeholder="width" required> <br>
+        <input type="number" th:field="*{height}" placeholder="height" required> <br>
+        <input type="submit" value="Create Rectangle"> <br>
     </form>
 
-    <a th:href="@{/}">main page</a>
+    <div class="main-menu">
+        <a th:href="@{/}">main menu</a>
+    </div>
 </body>
 </html>
