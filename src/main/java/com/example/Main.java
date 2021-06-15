@@ -79,8 +79,8 @@ public class Main {
     // save rectangle into db
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer)";
-      String sqlInsert = "INSERT INTO rectangles (name, color, width, height) VALUES ('" + rect.getName() + "', '" + rect.getColor() + "', " + rect.getWidth() + ", " + rect.getHeight() + ")";
+      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer, isPremiumRect boolean)";
+      String sqlInsert = "INSERT INTO rectangles (name, color, width, height, isPremiumRect) VALUES ('" + rect.getName() + "', '" + rect.getColor() + "', " + rect.getWidth() + ", " + rect.getHeight() + ", " + rect.getIsPremiumRect() + ")";
       stmt.executeUpdate(sqlTable);
       stmt.executeUpdate(sqlInsert);
       return "redirect:/create/success";
@@ -119,7 +119,7 @@ public class Main {
     // delete rectangle with id = id from db
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer)";
+      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer, isPremiumRect boolean)";
       String sqlDelete = "DELETE FROM rectangles WHERE id=" + rectID.getID();
       stmt.executeUpdate(sqlTable);
       stmt.executeUpdate(sqlDelete);
@@ -147,7 +147,7 @@ public class Main {
   {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer)";
+      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer, isPremiumRect boolean)";
       String sqlSelect = "SELECT * FROM rectangles";
       stmt.executeUpdate(sqlTable);
       ResultSet rs = stmt.executeQuery(sqlSelect);
@@ -160,8 +160,6 @@ public class Main {
         rect.setID(rs.getInt("id"));
         rect.setName(rs.getString("name"));
         rect.setColor(rs.getString("color"));
-        rect.setWidth(rs.getInt("width"));
-        rect.setHeight(rs.getInt("height"));
         rects.add(rect);
       }
       model.put("rects", rects);
@@ -191,6 +189,7 @@ public class Main {
       rect.setColor(rs.getString("color"));
       rect.setWidth(rs.getInt("width"));
       rect.setHeight(rs.getInt("height"));
+      rect.setIsPremiumRect(rs.getBoolean("isPremiumRect"));
       model.put("rect", rect);
       return "display-details";
     } catch (Exception e) {

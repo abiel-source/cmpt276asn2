@@ -6,6 +6,7 @@ public class Rectangle {
     private int width;
     private int height;
     private int ID;
+    private boolean isPremiumRect;
 
     // accessors
     // =========
@@ -34,6 +35,11 @@ public class Rectangle {
         return this.ID;
     }
 
+    public boolean getIsPremiumRect()
+    {
+        return this.isPremiumRect;
+    }
+
     // mutators
     // ========
     public void setName(String n)
@@ -59,5 +65,10 @@ public class Rectangle {
     public void setID(int id) // cant use?
     {
         this.ID = id;
+    }
+
+    public void setIsPremiumRect(boolean isPremium)
+    {
+        this.isPremiumRect = isPremium;
     }
 }

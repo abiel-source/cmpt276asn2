@@ -15,11 +15,16 @@
     <p>enter the <u>name</u>, <u>color</u>, <u>width</u>, and <u>height</u> attributes of your rectangle!</p>
 
     <form action="#" method="post" th:action="@{/create}" th:object="${rect}" autocomplete="off">
-        <input type="text" th:field="*{name}" placeholder="name" required> <br>
-        <input type="text" th:field="*{color}" placeholder="color" required> <br>
-        <input type="number" th:field="*{width}" placeholder="width" required> <br>
-        <input type="number" th:field="*{height}" placeholder="height" required> <br>
-        <input type="submit" value="Create Rectangle"> <br>
+        <input type="text" th:field="*{name}" placeholder="name" required>
+        <input type="text" th:field="*{color}" placeholder="color" required>
+        <input type="number" th:field="*{width}" placeholder="width" required>
+        <input type="number" th:field="*{height}" placeholder="height" required>
+        <div class="premium">
+            <span>is premium rectangle?</span>
+            <input type="checkbox" th:field="*{isPremiumRect}">
+        </div>
+        
+        <input type="submit" value="Create Rectangle">
     </form>
 
     <div class="main-menu">

@@ -68,10 +68,24 @@ input[type=submit]:focus {
     background-color: purple;
 }
 
-form, input {
-    width: 350px;
+input[type=checkbox] {
+    width: 50px;
+}
+
+.premium {
+    background-color: blueviolet;
+    padding: 10px;
+}
+
+form, input, .premium {
+    width: 100%;
     border: 3px solid black;
     border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+form {
+    width: 450px;
 }
 
 /* table */
