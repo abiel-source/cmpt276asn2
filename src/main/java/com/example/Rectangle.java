@@ -5,6 +5,7 @@ public class Rectangle {
     private String color;
     private int width;
     private int height;
+    private int ID;
 
     // accessors
     // =========
@@ -28,6 +29,11 @@ public class Rectangle {
         return this.height;
     }
 
+    public int getID()
+    {
+        return this.ID;
+    }
+
     // mutators
     // ========
     public void setName(String n)
@@ -48,5 +54,10 @@ public class Rectangle {
     public void setHeight(int h)
     {
         this.height = h;
+    }
+
+    public void setID(int id) // cant use?
+    {
+        this.ID = id;
     }
 }

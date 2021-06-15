@@ -7,6 +7,12 @@
   <title>index</title>
 </head>
 <body>
-  <p th:text="${username}"></p>
+  <div class="header">
+    <div class="header-right">
+      <a th:href="@{/create}">create rectangle</a>
+      <a th:href="@{/destroy}">destroy rectangle</a>
+      <a th:href="@{/display}">display rectangles</a>
+    </div>
+  </div>
 </body>
 </html>

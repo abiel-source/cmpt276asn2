@@ -55,30 +55,26 @@ public class Main {
   // =========
   @RequestMapping("/")
   String index(Map<String, Object> model) {
-    String name = "abiel";
-    model.put("username", name);
     return "index";
   }
 
-  // rectangle GET
-  // =============
+  // create
+  // ======
   @GetMapping(
-    path = "/rectangle"
+    path = "/create"
   )
-  public String getRectForm(Map<String, Object> model)
+  public String getCreateForm(Map<String, Object> model)
   {
     Rectangle rect = new Rectangle();
     model.put("rect", rect);
-    return "rectangle.html";
+    return "create";
   }
 
-  // rectangle POST
-  // ==============
   @PostMapping(
-    path = "/rectangle",
+    path = "/create",
     consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
   )
-  public String handleRectFormSubmit(Map<String, Object> model, Rectangle rect) throws Exception
+  public String handleCreateForm(Map<String, Object> model, Rectangle rect) throws Exception
   {
     // save rectangle into db
     try (Connection connection = dataSource.getConnection()) {
@@ -87,42 +83,124 @@ public class Main {
       String sqlInsert = "INSERT INTO rectangles (name, color, width, height) VALUES ('" + rect.getName() + "', '" + rect.getColor() + "', " + rect.getWidth() + ", " + rect.getHeight() + ")";
       stmt.executeUpdate(sqlTable);
       stmt.executeUpdate(sqlInsert);
-      return "redirect:/rectangle/success";
+      return "redirect:/create/success";
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "error";
     }
   }
 
-  // rectangle SUCCESS
-  // =================
-  @GetMapping("/rectangle/success")
-  public String handleRectSuccess()
+  // create success
+  // ==============
+  @GetMapping("/create/success")
+  public String handleCreateSuccess()
   {
-    return "success";
+    return "create-success";
   }
 
-  @RequestMapping("/db")
-  String db(Map<String, Object> model) {
+  // destroy
+  // =======
+  @GetMapping(
+    path = "/destroy"
+  )
+  public String getDestroyForm(Map<String, Object> model)
+  {
+    Rectangle rectID = new Rectangle();
+    model.put("rectID", rectID);
+    return "destroy";
+  }
+
+  @PostMapping(
+    path = "/destroy",
+    consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
+  )
+  public String handleDestroyForm(Map<String, Object> model, Rectangle rectID) throws Exception
+  {
+    // delete rectangle with id = id from db
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-      ArrayList<String> output = new ArrayList<String>();
-      while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("tick"));
-      }
-
-      model.put("records", output);
-      return "db";
+      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer)";
+      String sqlDelete = "DELETE FROM rectangles WHERE id=" + rectID.getID();
+      stmt.executeUpdate(sqlTable);
+      stmt.executeUpdate(sqlDelete);
+      return "redirect:/destroy/success";
     } catch (Exception e) {
       model.put("message", e.getMessage());
       return "error";
     }
   }
 
+  // destroy success
+  // ==============
+  @GetMapping("/destroy/success")
+  public String handleDestroySuccess()
+  {
+    return "destroy-success";
+  }
+
+  // display records
+  // ===============
+  @GetMapping(
+    path = "/display"
+  )
+  public String getRectRecords(Map<String, Object> model)
+  {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      String sqlTable = "CREATE TABLE IF NOT EXISTS rectangles (id serial, name varchar(20), color varchar(20), width integer, height integer)";
+      String sqlSelect = "SELECT * FROM rectangles";
+      stmt.executeUpdate(sqlTable);
+      ResultSet rs = stmt.executeQuery(sqlSelect);
+
+      // rectangles
+      ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
+      while (rs.next())
+      {
+        Rectangle rect = new Rectangle();
+        rect.setID(rs.getInt("id"));
+        rect.setName(rs.getString("name"));
+        rect.setColor(rs.getString("color"));
+        rect.setWidth(rs.getInt("width"));
+        rect.setHeight(rs.getInt("height"));
+        rects.add(rect);
+      }
+      model.put("rects", rects);
+
+      return "display";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }
+  }
+
+  // display record details
+  // ======================
+  @GetMapping(
+    path = "/display/details/{id}"
+  )
+  public String getRectRecordDetails(Map<String, Object> model, @PathVariable int id)
+  {
+    try (Connection connection = dataSource.getConnection()) {
+      Statement stmt = connection.createStatement();
+      String sqlSelect = "SELECT * FROM rectangles WHERE id=" + id;
+      ResultSet rs = stmt.executeQuery(sqlSelect);
+      rs.next(); // position rs properly
+      Rectangle rect = new Rectangle();
+      rect.setID(rs.getInt("id"));
+      rect.setName(rs.getString("name"));
+      rect.setColor(rs.getString("color"));
+      rect.setWidth(rs.getInt("width"));
+      rect.setHeight(rs.getInt("height"));
+      model.put("rect", rect);
+      return "display-details";
+    } catch (Exception e) {
+      model.put("message", e.getMessage());
+      return "error";
+    }
+  }
+
+  // config
+  // ======
   @Bean
   public DataSource dataSource() throws SQLException {
     if (dbUrl == null || dbUrl.isEmpty()) {
@@ -133,5 +211,4 @@ public class Main {
       return new HikariDataSource(config);
     }
   }
-
 }
